@@ -57,12 +57,13 @@ https://weread.qq.com/book-detail?type=1&senderVid=6727677&v=4cc32520813ab8230g0
 
 #### 1.3 开发日志
 
-请根据 [日志模版](./Development Log/template.md) 在`Development Log`文件夹下创建日志文件夹
+请根据 [日志模版](./Development/template.md) 在`Development`文件夹下创建日志文件夹
 
 Example
 
 ```
-├── Development Log
+├── Development
+│   ├── Template.md
 │   ├── Jeffrey You.md
 │   ├── xxx.md
 │   ├── xxx.md
