@@ -7,12 +7,11 @@
 
 
 
-## 1. Schedule
+## 2. Schedule
 
 ### Dec 12. 2023
 
 <details> <summary> <b>👇 click me </b></summary>
-
 #### 1.1 整理聊天记录
 
 每个人整理两个2个助理的聊天记录
@@ -54,6 +53,23 @@ Example:
 建议把这本书第2-3章快速过一遍，更好的写prompt
 
 https://weread.qq.com/book-detail?type=1&senderVid=6727677&v=4cc32520813ab8230g015373
+
+#### 1.3 开发日志
+
+请根据 [日志模版](./Development Log/template.md) 在`Development Log`文件夹下创建日志文件夹
+
+Example
+
+```
+├── Development Log
+│   ├── Jeffrey You.md
+│   ├── xxx.md
+│   ├── xxx.md
+```
+
+
+
+
 
 </details>  
 
