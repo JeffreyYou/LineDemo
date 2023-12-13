@@ -1,6 +1,7 @@
 package com.jeffrey.linedemo.deprecated;
 
 import com.jeffrey.linedemo.entity.GreenMessage;
+import com.jeffrey.linedemo.entity.GreenMessageHTTP;
 import com.jeffrey.linedemo.utils.GreenApiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,15 +19,15 @@ public class ReceiveService {
     public void continuousPolling() throws Exception {
 
         greenApiUtils.clearQueue();
-        GreenMessage data = null;
+        GreenMessageHTTP data = null;
         while (true) {
             try {
                 data = greenApiUtils.receiveNotification();
                 if (data != null) {
-                    if (data.getTypeWebhook().equals("incomingMessageReceived")) {
+                    if (data.getBody().getTypeWebhook().equals("incomingMessageReceived")) {
                         System.out.println(data.toString());
                     }
-//                    greenApiUtils.deleteNofitication(data.getReceiptId());
+                    greenApiUtils.deleteNofitication(data.getReceiptId());
 
                 }
 

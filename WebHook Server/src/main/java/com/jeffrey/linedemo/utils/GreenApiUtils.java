@@ -2,6 +2,7 @@ package com.jeffrey.linedemo.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jeffrey.linedemo.entity.GreenMessage;
+import com.jeffrey.linedemo.entity.GreenMessageHTTP;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -21,7 +22,7 @@ public class GreenApiUtils {
    public void clearQueue() throws JsonProcessingException {
       System.out.println("-----------------------------------------------------Service Started------------------------------------------------------------");
       log.info("Cleaning existing messages...");
-      GreenMessage data = receiveNotification();
+      GreenMessageHTTP data = receiveNotification();
       while (data != null) {
 //         deleteNofitication(data.getReceiptId());
          data = receiveNotification();
@@ -43,14 +44,14 @@ public class GreenApiUtils {
       ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
 //      System.out.println("Response: " + response.getBody());
    }
-   public GreenMessage receiveNotification() throws JsonProcessingException {
+   public GreenMessageHTTP receiveNotification() throws JsonProcessingException {
       String url = generateUrl("receive", 0L);
 
       HttpHeaders headers = new HttpHeaders();
       HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-      ResponseEntity<GreenMessage> responseJson = restTemplate.exchange(url, HttpMethod.GET, entity, GreenMessage.class);
-      GreenMessage message = responseJson.getBody();
+      ResponseEntity<GreenMessageHTTP> responseJson = restTemplate.exchange(url, HttpMethod.GET, entity, GreenMessageHTTP.class);
+      GreenMessageHTTP message = responseJson.getBody();
 
       if (message == null) {
          return null;

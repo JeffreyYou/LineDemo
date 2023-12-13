@@ -48,8 +48,6 @@ public class WebSocketUtils {
                         .get();
 
         userSessions.put(phone, session);
-//        session.sendMessage(new TextMessage("Terminal"));
-//        session.sendMessage(new TextMessage("10"));
 
     }
 
@@ -68,13 +66,6 @@ public class WebSocketUtils {
                 sb.setLength(0);
             }
         }
-
-        private String getPhone(WebSocketSession session) {
-            String userId = session.getHandshakeHeaders().get("chat_id").get(0);
-
-            return userId;
-        }
-
     }
 
     private String generateUri(String phone) {

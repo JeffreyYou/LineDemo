@@ -15,7 +15,9 @@ public class WebHook {
     @Autowired
     OpenaiService openaiService;
 
-    @RequestMapping("test")
+//    Your public IP address
+//    http://99.9.142.36:8080/webhook/receive
+    @RequestMapping("receive")
     public ResponseEntity<String> test(@RequestBody GreenMessage message) {
 //        System.out.println(message.toString());
 

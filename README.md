@@ -1,22 +1,33 @@
 # Line Demo
 
-## 1. Installation
+## 1. Quick Start
 
-LangChain Server (Real Char):
+**LangChain Server (Real Char):**
+
+Install dependencies
 
 ```shell
 pip install -r requirements.txt --user
 ```
+Start the server
 
 ```shell
 python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
 ```
 
-Webhook Server:
+**Webhook Server:**
 
 Open `WebHook Server` through IntelliJ 
 
+Run the `LineDemoApplication`
 
+**Green API Documentation:**
+
+https://green-api.com/en/docs/api/sending/SendMessage/
+
+https://green-api.com/en/docs/api/receiving/technology-http-api/ReceiveNotification/
+
+https://green-api.com/en/docs/api/receiving/technology-http-api/DeleteNotification/
 
 ## 2. Schedule
 
