@@ -233,5 +233,5 @@ LineDemo
 - Chroma
 - MySQL / SQLite
 
-
+</details> 
 
