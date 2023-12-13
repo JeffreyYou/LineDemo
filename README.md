@@ -1,5 +1,12 @@
 # Line Demo
 
+## 1. Project Structure
+
+```
+```
+
+
+
 ## 1. Schedule
 
 ### Dec 12. 2023
@@ -34,7 +41,7 @@ User: 聊天内容
 
 # 输入Character Name和Character的设定并在左下角Create Character
 
-# 如果遇到bug，F12开发者工具->Application->Local Storage->Clear Local Storage
+# 如果遇到bug，F12开发者工具->Application->Local Storage->Clear Local Storage->重新访问上面链接
 # 目前删除Character时可能会遇到bug，后面我会修一下
 ```
 
