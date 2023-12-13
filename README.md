@@ -1,6 +1,18 @@
 # Line Demo
 
-## 1. Project Structure
+## 1. Installation
+
+### OpenAI Server(Real Char):
+
+```shell
+pip install -r requirements.txt --user
+```
+
+```shell
+python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
+```
+
+### Webhook Server
 
 ```
 ```
