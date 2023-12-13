@@ -224,6 +224,7 @@ LineDemo
 
 ## 4. Tech Stack
 <details> <summary> <b>👇 Click Me </b></summary>
+
 - Green API
 - LangChain
 - Docker
