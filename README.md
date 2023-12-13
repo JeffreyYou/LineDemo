@@ -40,11 +40,11 @@ User: 聊天内容
 
 Example:
 
-![image-20231212194215964](/Users/jeffreyyou/Library/Application Support/typora-user-images/image-20231212194215964.png)
+![image-20231212194215964](./images/website1.png)
 
-![image-20231212194300555](/Users/jeffreyyou/Library/Application Support/typora-user-images/image-20231212194300555.png)
+![image-20231212194300555](./images/website2.png)
 
-建议过一遍第2-3章，更好的写prompt
+建议把这本书第2-3章快速过一遍，更好的写prompt
 
 https://weread.qq.com/book-detail?type=1&senderVid=6727677&v=4cc32520813ab8230g015373
 
