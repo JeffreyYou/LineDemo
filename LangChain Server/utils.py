@@ -3,9 +3,14 @@ from pydantic.dataclasses import dataclass
 from typing import List, Optional, Callable
 from dataclasses import field
 from starlette.websockets import WebSocket, WebSocketState
+from dotenv import load_dotenv
 
+import os
 import json
 from openai_llm import get_llm, AsyncCallbackTextHandler
+
+load_dotenv()
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 @dataclass
 class Character:
@@ -97,11 +102,10 @@ def get_character_websocket(data, character):
     data = json.loads(data["text"])
     model = "gpt-3.5-turbo"
     temperature = 0.1
-    apiKey = "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"
     user_input = data["messageContent"]
 
     try:
-        llm = get_llm(model, temperature, apiKey)
+        llm = get_llm(model, temperature, openai_api_key)
     except Exception as e:
         llm = None
 
