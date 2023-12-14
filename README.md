@@ -38,7 +38,7 @@ https://green-api.com/en/docs/api/receiving/technology-http-api/DeleteNotificati
 
 ## 2. Schedule
 
-### Dec 13. 2023
+[Dec 13.2023](./schedule/Dec13_2023.md)
 
 ## 3. Project Structure
 
