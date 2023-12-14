@@ -34,6 +34,7 @@ public class OpenaiService {
     public void handleRequest(String phone, String message, String chatId) {
         try {
             System.out.println("[User]: " + message);
+            System.out.print("[AI]: ");
             WebSocketSession session = webSocketUtils.createSessionIfNotExist(phone, chatId);
 
             if (message.startsWith("[Day")) {
