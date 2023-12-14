@@ -24,7 +24,7 @@ public class GreenApiUtils {
       log.info("Cleaning existing messages...");
       GreenMessageHTTP data = receiveNotification();
       while (data != null) {
-//         deleteNofitication(data.getReceiptId());
+         deleteNofitication(data.getReceiptId());
          data = receiveNotification();
       }
       log.info("Message queue cleared");

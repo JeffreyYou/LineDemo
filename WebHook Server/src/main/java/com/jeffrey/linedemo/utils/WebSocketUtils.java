@@ -64,6 +64,7 @@ public class WebSocketUtils {
             } else {
                 greenApiUtils.sendMessageToUser(sb.toString(), userId);
                 sb.setLength(0);
+                System.out.println();
             }
         }
     }

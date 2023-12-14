@@ -2,6 +2,7 @@ package com.jeffrey.linedemo.deprecated;
 
 import com.jeffrey.linedemo.entity.GreenMessage;
 import com.jeffrey.linedemo.entity.GreenMessageHTTP;
+import com.jeffrey.linedemo.service.OpenaiService;
 import com.jeffrey.linedemo.utils.GreenApiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,8 @@ import java.sql.SQLOutput;
 public class ReceiveService {
     @Autowired
     private GreenApiUtils greenApiUtils;
+    @Autowired
+    OpenaiService openaiService;
 
     //   @PostConstruct
     @Scheduled(fixedRate = 1000)
@@ -25,7 +28,9 @@ public class ReceiveService {
                 data = greenApiUtils.receiveNotification();
                 if (data != null) {
                     if (data.getBody().getTypeWebhook().equals("incomingMessageReceived")) {
-                        System.out.println(data.toString());
+                        GreenMessage message = data.getBody();
+                        openaiService.sendMessage(message);
+//                        System.out.println(data.toString());
                     }
                     greenApiUtils.deleteNofitication(data.getReceiptId());
 
