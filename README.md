@@ -9,6 +9,13 @@ Install dependencies
 ```shell
 pip install -r requirements.txt --user
 ```
+Setup Environment Variable
+
+```shell
+cp .env.example .env
+# Put your OpenAI Api Key in .env file
+```
+
 Start the server
 
 ```shell
