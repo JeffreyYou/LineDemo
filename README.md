@@ -40,11 +40,15 @@ https://green-api.com/en/docs/api/receiving/technology-http-api/DeleteNotificati
 
 [Dec 13.2023](./schedule/Dec13_2023.md)
 
-## 3. Project Structure
+[Dec 14.2023](./schedule/Dec14_2023.md)
+
+## 3. Development Progress
+
+[Jeffrey You](./Development/Jeffrey.md)
+
+## 4. Project Structure
 
 <details> <summary> <b>👇 Click Me </b></summary>
-
-
 ```
 LineDemo
 │   .gitignore
@@ -180,7 +184,8 @@ LineDemo
 
 </details> 
 
-## 4. Tech Stack
+## 5. Tech Stack
+
 <details> <summary> <b>👇 Click Me </b></summary>
 
 - Green API
