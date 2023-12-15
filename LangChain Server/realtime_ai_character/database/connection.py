@@ -28,14 +28,14 @@ def get_db():
 
 if __name__ == "__main__":
     print(SQLALCHEMY_DATABASE_URL)
-    from realtime_ai_character.models.user import User
-    with SessionLocal() as session:
-        print(session.query(User).all())
-        session.delete(User(name="Test", email="text@gmail.com"))
-        session.commit()
+    # from realtime_ai_character.models import User
+    # with SessionLocal() as session:
+    #     print(session.query(User).all())
+    #     session.delete(User(name="Test", email="text@gmail.com"))
+    #     session.commit()
 
-        print(session.query(User).all())
-        session.query(User).filter(User.name == "Test").delete()
-        session.commit()
+    #     print(session.query(User).all())
+    #     session.query(User).filter(User.name == "Test").delete()
+    #     session.commit()
 
-        print(session.query(User).all())
+    #     print(session.query(User).all())

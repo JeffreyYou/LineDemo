@@ -1,4 +1,4 @@
-from database.base import Base  # import the Base model
+from realtime_ai_character.database.base import Base  # import the Base model
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context

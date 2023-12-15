@@ -7,7 +7,10 @@ import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
 
 import java.net.URI;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,15 +72,21 @@ public class WebSocketUtils {
         }
     }
 
-    private String generateUri(String phone) {
+    private String generateUri(String phone) throws NoSuchAlgorithmException {
         StringBuilder builder = new StringBuilder("ws://");
         String url = "localhost:8000";
         String api_key = "123";
         String llm_model = "gpt-3.5-turbo-16k";
 
+        // generate sessionId hash based on phone number
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(phone.getBytes(StandardCharsets.UTF_8));
+        BigInteger number = new BigInteger(1, hash);
+        String sessionId = number.toString(16); // Convert to hexadecimal string
+
         builder.append(url)
                 .append("/ws/")
-                .append(phone)
+                .append(sessionId)
                 .append("?api_key=")
                 .append(api_key)
                 .append("&llm_model=")

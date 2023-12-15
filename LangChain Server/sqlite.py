@@ -1,13 +1,14 @@
 import uuid
-from realtime_ai_character.utils import ConversationHistory, build_history
 from realtime_ai_character.models.interaction import Interaction
 from realtime_ai_character.database.connection import get_db
+from realtime_ai_character.utils import ConversationHistory, build_history
 from requests import Session
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
+
 
 load_dotenv()
 
@@ -34,8 +35,8 @@ message_id = str(uuid.uuid4().hex)[:16]
 tools = []
 interaction = Interaction(  user_id=session_id,
                             session_id=session_id,
-                            client_message_unicode="hello",
-                            server_message_unicode="how can I help you?",
+                            client_message_unicode="can you do me a favor?",
+                            server_message_unicode="yes, of course.",
                             platform="terminal",
                             action_type='text',
                             character_id="Line Demo",
@@ -45,5 +46,9 @@ interaction = Interaction(  user_id=session_id,
 
 db = SessionLocal()
 db.add(interaction)
+# conversations = db.query(Interaction).all()
 db.commit()
+# for conversation in conversations:
+#     print(f"ID: {conversation.user_id}, Message: {conversation.client_message_unicode}")
+
 db.close()

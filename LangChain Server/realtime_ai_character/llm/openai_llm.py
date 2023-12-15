@@ -68,6 +68,8 @@ class OpenaiLlm(LLM):
         # response = await self.chat_open_ai.agenerate(
         #     [history], callbacks=[callback],
         #     metadata=metadata)
+        return response.generations[0][0].text
+
 def get_llm(model, temperature, api_key) -> LLM:
     if model.startswith('gpt'):
         from realtime_ai_character.llm.openai_llm import OpenaiLlm
