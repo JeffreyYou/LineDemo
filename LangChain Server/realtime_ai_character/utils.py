@@ -4,10 +4,12 @@ from typing import List, Optional, Callable
 from dataclasses import field
 from starlette.websockets import WebSocket, WebSocketState
 from dotenv import load_dotenv
+from sqlalchemy.orm import Session
+from realtime_ai_character.models.interaction import Interaction
 
 import os
 import json
-from openai_llm import get_llm, AsyncCallbackTextHandler
+from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
 
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -39,6 +41,11 @@ class ConversationHistory:
         for user_message, ai_message in zip(self.user, self.ai):
             yield user_message
             yield ai_message
+    def load_from_db(self, session_id: str, db: Session):
+        conversations = db.query(Interaction).filter(Interaction.session_id == session_id).all()
+        for conversation in conversations:
+            self.user.append(conversation.client_message_unicode)
+            self.ai.append(conversation.server_message_unicode)
 
 class Singleton:
     _instances = {}

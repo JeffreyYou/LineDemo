@@ -1,26 +1,31 @@
 from fastapi import APIRouter, Depends, HTTPException, Path, WebSocket, WebSocketDisconnect, Query
-from catalog import CatalogManager, get_catalog_manager
-from utils import get_connection_manager, get_character_websocket
+from realtime_ai_character.character_catalog.catalog import CatalogManager, get_catalog_manager
+from realtime_ai_character.utils import get_connection_manager, get_character_websocket
+from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
+from realtime_ai_character.utils import ConversationHistory, build_history
+from requests import Session
+from realtime_ai_character.database.connection import get_db
+
 import asyncio
 import json
-from openai_llm import get_llm, AsyncCallbackTextHandler
-from utils import ConversationHistory, build_history
 
 router = APIRouter()
 manager = get_connection_manager()
+catalog_manager = get_catalog_manager()
 
 @router.websocket("/ws/{phone_number}")
 async def websocket_endpoint(websocket: WebSocket,
                              phone_number: str = Path(...),
                              api_key: str = Query(None),
                              llm_model: str = Query(None),
-                             catalog_manager=Depends(get_catalog_manager)):
+                             catalog_manager=Depends(get_catalog_manager),
+                             db: Session = Depends(get_db)):
 
     await manager.connect(websocket)
     
     try:
         main_task = asyncio.create_task(
-            handle_receive(websocket, phone_number, catalog_manager))
+            handle_receive(websocket, phone_number, catalog_manager, db))
 
         await asyncio.gather(main_task)
 
@@ -29,10 +34,10 @@ async def websocket_endpoint(websocket: WebSocket,
         await manager.broadcast_message(f"User #{phone_number} left the chat")
 
 
-async def handle_receive(websocket: WebSocket, phone_number: str, catalog_manager: CatalogManager):
+async def handle_receive(websocket: WebSocket, phone_number: str, catalog_manager: CatalogManager, db: Session):
+
     async def on_new_token(token) -> None:
-        await manager.send_message(message=token,
-                            websocket=websocket)
+        await manager.send_message(message=token,websocket=websocket)
     
     try:
         while True:
@@ -45,7 +50,6 @@ async def handle_receive(websocket: WebSocket, phone_number: str, catalog_manage
             
             if (data["type"] == "websocket.receive"):
 
-                catalog_manager = get_catalog_manager()
                 character = catalog_manager.get_character("LineDemo")
                 
                 llm, character, conversation_history, user_input = get_character_websocket(data, character)
