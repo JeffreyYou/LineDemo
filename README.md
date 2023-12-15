@@ -49,6 +49,7 @@ https://green-api.com/en/docs/api/receiving/technology-http-api/DeleteNotificati
 ## 4. Project Structure
 
 <details> <summary> <b>👇 Click Me </b></summary>
+
 ```
 LineDemo
 │   .gitignore
