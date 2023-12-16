@@ -2,7 +2,7 @@
 
 ## 1. Progress Log
 
-**Developer Name**: [Insert your name here]
+**Developer Name**: Harry Tan
 
 ### [Insert the date]
 
