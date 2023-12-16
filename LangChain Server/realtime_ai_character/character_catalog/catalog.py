@@ -1,7 +1,7 @@
 import yaml
 from pathlib import Path
 from contextlib import ExitStack
-from utils import Singleton, Character
+from realtime_ai_character.utils import Singleton, Character
 
 
 class CatalogManager(Singleton):
@@ -17,7 +17,7 @@ class CatalogManager(Singleton):
 
     def load_characters(self):
         path = Path(__file__).parent
-        path = path / 'character'
+        # path = path / 'character'
         excluded_dirs = {"__pycache__"}
         directories = [d for d in path.iterdir() if d.is_dir()
                         and d.name not in excluded_dirs]

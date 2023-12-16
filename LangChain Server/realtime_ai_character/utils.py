@@ -4,10 +4,14 @@ from typing import List, Optional, Callable
 from dataclasses import field
 from starlette.websockets import WebSocket, WebSocketState
 from dotenv import load_dotenv
+from sqlalchemy.orm import Session
+from realtime_ai_character.models.interaction import Interaction
+from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
 
 import os
 import json
-from openai_llm import get_llm, AsyncCallbackTextHandler
+import asyncio
+
 
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -39,6 +43,13 @@ class ConversationHistory:
         for user_message, ai_message in zip(self.user, self.ai):
             yield user_message
             yield ai_message
+    def __str__(self):
+        return f"System: {self.system_prompt}, user: {self.user}, ai: {self.ai}"
+    def load_from_db(self, session_id: str, db: Session):
+        conversations = db.query(Interaction).filter(Interaction.session_id == session_id).order_by(Interaction.timestamp).all()
+        for conversation in conversations:
+            self.user.append(conversation.client_message_unicode)
+            self.ai.append(conversation.server_message_unicode)
 
 class Singleton:
     _instances = {}
@@ -98,19 +109,42 @@ def get_connection_manager():
     return ConnectionManager.get_instance()
 
 
-def get_character_websocket(data, character):
+def get_character_websocket(data):
     data = json.loads(data["text"])
     model = "gpt-3.5-turbo"
     temperature = 0.1
-    user_input = data["messageContent"]
+    msg_data = data["messageContent"]
 
     try:
         llm = get_llm(model, temperature, openai_api_key)
     except Exception as e:
         llm = None
 
-    conversation_history = ConversationHistory()
 
-    conversation_history.system_prompt = character.llm_system_prompt
+    return llm, msg_data
 
-    return llm, character, conversation_history, user_input
+
+@dataclass
+class SessionAuthResult:
+    is_existing_session: bool
+    is_authenticated_user: bool
+
+async def check_session_auth(session_id: str, db: Session, logger) -> SessionAuthResult:
+    try:
+        original_chat = await asyncio.to_thread(
+            db.query(Interaction).filter(Interaction.session_id == session_id).first)
+    except Exception as e:
+        logger.info(f'Failed to lookup session {session_id} with error {e}')
+        return SessionAuthResult(
+            is_existing_session=False,
+            is_authenticated_user=False,
+        )
+    if not original_chat:
+        return SessionAuthResult(
+            is_existing_session=False,
+            is_authenticated_user=False,
+        )
+    return SessionAuthResult(
+            is_existing_session=True,
+            is_authenticated_user=False,
+    )
