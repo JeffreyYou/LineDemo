@@ -41,3 +41,22 @@
 - **Additional Notes**
   - Null
 
+### [Dec 15. 2023]
+
+- **Time Spent:** 4 hours
+- **Tasks Completed:**
+  - Prompt Chapter 2
+  - day 11-day 17
+- **Issues Encountered:**
+  - Cannot setup the termianl
+  - meed data from previous day
+  - openAI API not working
+- **Solutions and Workarounds:**
+  - *either*
+  - through adding promopt to each day
+  - access data from previous day
+- **Next Steps:**
+  - day 17-19, & 10
+- **Additional Notes**
+  - Null
+
