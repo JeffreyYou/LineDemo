@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from websocket_routes import router as websocket_router
-from catalog import CatalogManager
-from utils import ConnectionManager
+from realtime_ai_character.websocket_routes import router as websocket_router
+from realtime_ai_character.character_catalog.catalog import CatalogManager
+from realtime_ai_character.utils import ConnectionManager
 
 app = FastAPI()
 
