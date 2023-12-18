@@ -43,7 +43,6 @@
   - Null
 
 
-
 ### [Dec 15. 2023]
 
 - **Time Spent:** 6 hours
@@ -63,6 +62,7 @@
 - **Additional Notes**
   - Null
 
+
 ## 2. Code Changes
 
 ### [Dec 13. 2023]
@@ -74,3 +74,5 @@ https://github.com/JeffreyYou/LineDemo/commit/f8367d4a0d3a54906eab17c598e932e45a
 https://github.com/JeffreyYou/LineDemo/commit/72e414e92a24820599754ae39eeab01eeed1863a
 
 ### [Dec 15. 2023]
+
+https://github.com/JeffreyYou/LineDemo/commit/9816be7fdbfb5eaa707abdc750400860256a1be9

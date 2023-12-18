@@ -4,19 +4,15 @@
 
 **LangChain Server (Real Char):**
 
-Install dependencies
+Install dependencies and setup database
 
 ```shell
 pip install -r requirements.txt --user
-```
-Setup Environment Variable
-
-```shell
+sqlite3 test.db "VACUUM;"
+alembic upgrade head
 cp .env.example .env
-# Put your OpenAI Api Key in .env file
 ```
-
-Start the server
+Setup environment variable `Api Key` in `.env` file and start the server
 
 ```shell
 python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
