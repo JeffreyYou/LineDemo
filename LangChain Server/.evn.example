@@ -1,5 +1,0 @@
-DATABASE_URL=sqlite:///./test.db
-
-
-
-OPENAI_API_KEY=
