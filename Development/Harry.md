@@ -60,3 +60,18 @@
 - **Additional Notes**
   - Null
 
+### [Dec 16 - Dec17. 2023]
+
+- **Time Spent:** 3 hours
+- **Tasks Completed:**
+  - Finshed configuring the Longchain server
+  - day 18-day 20
+  - revised some formats for day 11 - day 20
+- **Issues Encountered:**
+  - Certain promts require a lot of external stock information.
+- **Solutions and Workarounds:**
+  - placed placedholder [need data] in where we need advanced logic
+- **Next Steps:**
+  - Q & A for getting stock exchanges
+- **Additional Notes**
+  - Null
