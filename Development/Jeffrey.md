@@ -40,7 +40,7 @@
   - Prompt chain
   - Prompt Test
 - **Additional Notes**
-  - Null
+  - None
 
 
 ### [Dec 15. 2023]
@@ -60,8 +60,23 @@
   - Prompt chain
   - Prompt Test
 - **Additional Notes**
-  - Null
+  - None
 
+### [Dec 16-19. 2023]
+
+- **Time Spent:** 6 hours
+- **Tasks Completed:**
+  - Support character selection 
+  - Support character-based chat history
+  - Support character test
+  - Support auto clear chat history during test
+- **Solutions and Workarounds:**
+  - None
+- **Next Steps:**
+  - Implement chroma semantic search
+  - Implement scheduled notification
+- **Additional Notes**
+  - None
 
 ## 2. Code Changes
 
@@ -76,3 +91,5 @@ https://github.com/JeffreyYou/LineDemo/commit/72e414e92a24820599754ae39eeab01eee
 ### [Dec 15. 2023]
 
 https://github.com/JeffreyYou/LineDemo/commit/9816be7fdbfb5eaa707abdc750400860256a1be9
+
+### [Dec 16-19. 2023]

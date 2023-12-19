@@ -4,16 +4,13 @@ import lombok.Data;
 
 @Data
 public class OpenAIMessage {
-    String messageContent;
+    String message_content;
     Boolean isQuestion;
-
-    public OpenAIMessage(String message) {
-        if (message.startsWith("[day")) {
-            this.isQuestion = false;
-            this.messageContent = "empty";
-        } else {
-            this.isQuestion = true;
-            this.messageContent = message;
-        }
+    String character;
+    String operation;
+    public OpenAIMessage(String message, String character, String operation) {
+        this.message_content = message;
+        this.character = character;
+        this.operation = operation;
     }
 }

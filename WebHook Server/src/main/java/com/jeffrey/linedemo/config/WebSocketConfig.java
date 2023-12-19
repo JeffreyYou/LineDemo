@@ -1,6 +1,7 @@
 package com.jeffrey.linedemo.config;
 
 import com.google.gson.Gson;
+import com.jeffrey.linedemo.utils.SelectCharacterUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +19,11 @@ public class WebSocketConfig {
     }
 
     @Bean
-    public ConcurrentHashMap<String, WebSocketSession> concurrentHashMap() {
+    public ConcurrentHashMap<String, WebSocketSession> connectionPool() {
+        return new ConcurrentHashMap<>();
+    }
+    @Bean
+    public ConcurrentHashMap<String, String> userCharacter() {
         return new ConcurrentHashMap<>();
     }
 
@@ -30,5 +35,9 @@ public class WebSocketConfig {
     @Bean
     public Gson gsonClient() {
         return new Gson();
+    }
+
+    public SelectCharacterUtils selectCharacterUtils() {
+        return new SelectCharacterUtils();
     }
 }

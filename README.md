@@ -42,9 +42,13 @@ Using `git pull` to update most recent changes
 
 [Dec 15.2023](./schedule/Dec15_2023.md)
 
+[Dec 19.2023](./schedule/Dec19_2023.md)
+
 ## 3. Development Progress
 
 [Jeffrey You](./Development/Jeffrey.md)
+[Henry](./Development/Henry%20Wang.md)
+[Junjie](./Development/Junjie.md)
 
 ## 4. Project Structure
 

@@ -34,7 +34,5 @@ user: | # you don't need to change this for most cases
   ---
   {query}
 
-text_to_speech_use: ELEVEN_LABS
+notification: 早上好，这是今天的早晨信息。请在空闲时阅读。~https://drive.google.com/drive/u/0/home
 
-voice_id: ErXwobaYiN019PkySvjV
-visibility: public

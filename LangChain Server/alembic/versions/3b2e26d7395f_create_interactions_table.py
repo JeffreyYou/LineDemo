@@ -22,6 +22,7 @@ def upgrade() -> None:
                     sa.Column('client_message_unicode', sa.Unicode(65535)),
                     sa.Column('server_message_unicode', sa.Unicode(65535)),
                     sa.Column('session_id', sa.String(100), nullable=True),
+                    sa.Column('character_name', sa.String(100), nullable=True),
                     sa.Column('timestamp', sa.DateTime(), nullable=True),
                     sa.Column('character_id', sa.String(100), nullable=True),
                     sa.Column('client_id', sa.Integer(), nullable=True),
