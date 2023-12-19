@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Path, WebSocket, WebSocketDisconnect, Query
 from realtime_ai_character.character_catalog.catalog import CatalogManager, get_catalog_manager
-from realtime_ai_character.utils import get_connection_manager, get_character_websocket
-from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
+from realtime_ai_character.utils import get_connection_manager, delete_chat_history, handle_request
+from realtime_ai_character.llm.openai_llm import AsyncCallbackTextHandler
 from realtime_ai_character.utils import ConversationHistory, build_history, SessionAuthResult, check_session_auth
 from realtime_ai_character.database.connection import get_db
 from realtime_ai_character.models.interaction import Interaction
@@ -27,13 +27,12 @@ async def websocket_endpoint(websocket: WebSocket,
                              catalog_manager=Depends(get_catalog_manager),
                              db: Session = Depends(get_db)):
     
-    session_auth = await check_session_auth(session_id, db, logger)
 
     await manager.connect(websocket)
     
     try:
         main_task = asyncio.create_task(
-            handle_receive(session_id, websocket, db, session_auth))
+            handle_receive(session_id, websocket, db))
 
         await asyncio.gather(main_task)
 
@@ -42,36 +41,41 @@ async def websocket_endpoint(websocket: WebSocket,
         await manager.broadcast_message(f"User #{session_id} left the chat")
 
 
-async def handle_receive(session_id: str, websocket: WebSocket, db: Session, session_auth: SessionAuthResult):
+async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
     # callback function
     async def on_new_token(token) -> None:
         await manager.send_message(message=token,websocket=websocket)
     
     try:
-        conversation_history = ConversationHistory()
-        character = catalog_manager.get_character("LineDemo")
-        conversation_history.system_prompt = character.llm_system_prompt
-        if session_auth.is_existing_session:
-            logger.info(f"User #{session_id} is loading from existing session")
-            await asyncio.to_thread(conversation_history.load_from_db, session_id=session_id, db=db)
+
 
     
         while True:
             data = await websocket.receive()
-            # data = json.dumps(data)
             print(data)
+
+            
             if (data["type"] == "websocket.disconnect"):
                 await manager.disconnect(websocket)
                 return
             
             if (data["type"] == "websocket.receive"):
-
+                llm, message, character, operation = handle_request(data)
                 
-                llm, msg_data = get_character_websocket(data)
+                # delete chat history if needed
+                if operation == "delete_history":
+                    delete_chat_history(character)
+                    continue
+                
+                # load chat hisotry if there is any
+                session_auth = await check_session_auth(session_id, character, db, logger)
+                conversation_history = ConversationHistory()
+                character = catalog_manager.get_character(character)
+                conversation_history.system_prompt = character.llm_system_prompt
+                if session_auth.is_existing_session:
+                    logger.info(f"User #{session_id} is loading from existing session")
+                    await asyncio.to_thread(conversation_history.load_from_db, session_id=session_id, db=db)
 
-                # print(llm)
-                # print(character)
-                # print(ConversationHistory)
 
                 if (llm == None):
                     await manager.send_message(
@@ -79,9 +83,10 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session, ses
                             websocket=websocket) 
                     await manager.disconnect(websocket)
                     return
+                
                 response = await llm.achat(
                     history = build_history(conversation_history),
-                    user_input = msg_data,
+                    user_input = message,
                     user_input_template = character.llm_user_prompt,
                     callback = AsyncCallbackTextHandler(on_new_token, [])
                 )
@@ -91,12 +96,12 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session, ses
                             websocket=websocket)  
                 
                 # 4. Update conversation history
-                conversation_history.user.append(msg_data)
+                conversation_history.user.append(message)
                 conversation_history.ai.append(response)   
                 # 5. Persist interaction in the database
                 interaction = Interaction(user_id=session_id,
                             session_id=session_id,
-                            client_message_unicode=msg_data,
+                            client_message_unicode=message,
                             server_message_unicode=response,
                             platform="terminal",
                             action_type='text',

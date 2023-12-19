@@ -9,3 +9,5 @@ PyYAML
 websockets
 alembic==1.11.1
 chromadb==0.4.13
+llama_index==0.8.39.post2
+pypdf==3.16.2

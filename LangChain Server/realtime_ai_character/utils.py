@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 from realtime_ai_character.models.interaction import Interaction
 from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
+from sqlalchemy import and_
 
 import os
 import json
@@ -108,31 +109,15 @@ class ConnectionManager(Singleton):
 def get_connection_manager():
     return ConnectionManager.get_instance()
 
-
-def get_character_websocket(data):
-    data = json.loads(data["text"])
-    model = "gpt-3.5-turbo"
-    temperature = 0.1
-    msg_data = data["messageContent"]
-
-    try:
-        llm = get_llm(model, temperature, openai_api_key)
-    except Exception as e:
-        llm = None
-
-
-    return llm, msg_data
-
-
 @dataclass
 class SessionAuthResult:
     is_existing_session: bool
     is_authenticated_user: bool
 
-async def check_session_auth(session_id: str, db: Session, logger) -> SessionAuthResult:
+async def check_session_auth(session_id: str, character_name: str, db: Session, logger) -> SessionAuthResult:
     try:
         original_chat = await asyncio.to_thread(
-            db.query(Interaction).filter(Interaction.session_id == session_id).first)
+            db.query(Interaction).filter(and_(Interaction.session_id == session_id, Interaction.character_name == character_name)).first)
     except Exception as e:
         logger.info(f'Failed to lookup session {session_id} with error {e}')
         return SessionAuthResult(
@@ -148,3 +133,24 @@ async def check_session_auth(session_id: str, db: Session, logger) -> SessionAut
             is_existing_session=True,
             is_authenticated_user=False,
     )
+
+
+def delete_chat_history(character):
+    pass
+
+
+def handle_request(data):
+    data = json.loads(data["text"])
+    model = "gpt-3.5-turbo"
+    temperature = 0.1
+    message = data["message_content"]
+    character = data["character"]
+    operation = data["operation"]
+
+    try:
+        llm = get_llm(model, temperature, openai_api_key)
+    except Exception as e:
+        llm = None
+
+
+    return llm, message, character, operation
