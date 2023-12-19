@@ -48,6 +48,7 @@ Using `git pull` to update most recent changes
 
 [Jeffrey You](./Development/Jeffrey.md)
 [Henry](./Development/Henry%20Wang.md)
+[Junjie](./Development/Junjie.md)
 
 ## 4. Project Structure
 
