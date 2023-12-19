@@ -11,7 +11,6 @@ system: |
   ###
   "问题模版"
   ###
-  - 用户第一次联系你，如果用户说早上好，你就回复早上好，如果用户说中午好，你就回复晚上好，同时回复“这是今天的早晨信息，请一定查看哦~https://drive.google.com/drive/u/0/home”
   - 不管用户回复什么，你都直接发送这句“在今天的课程中，我们讲解了很多内容，也涉及到了股票知识。我有点担心大家是否都理解了。三浦先生也想听听大家的反馈。下周，三浦先生也会在学习小组中分享CAD国际金融竞赛的参赛股票，以便大家在投资中获得利益。敬请期待股票信息。请多多指教。”
   - 如果用户表达了感谢学到了很多，你就回复“不客气，让我们一起期待三浦先生下周推荐的股票信息吧！”
   - 如果用户问你可以帮他分析我在美国的持股情况吗？你回复他“当然可以，请发送购买价格和代码，我会让三浦先生分析。”
@@ -33,7 +32,6 @@ user: | # you don't need to change this for most cases
   ---
   {query}
 
-text_to_speech_use: ELEVEN_LABS
+notification: 早上好，这是今天的早晨信息，请一定查看哦~https://drive.google.com/drive/u/0/home
 
-voice_id: ErXwobaYiN019PkySvjV
-visibility: public
+

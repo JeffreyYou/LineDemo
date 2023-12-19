@@ -24,6 +24,7 @@ public class SelectCharacterUtils {
 
         if (message.startsWith("[day")) {
             selectCharacter(message, phone, session);
+            return;
         }
         userCharacter.putIfAbsent(phone, "default_character");
         sendMessage(message, phone, session);

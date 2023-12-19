@@ -32,6 +32,7 @@ class Character:
     visibility: str = ''
     tts: Optional[str] = ''
     data: Optional[dict] = None
+    notification: str = ''
 
 @dataclass
 class ConversationHistory:
@@ -46,8 +47,8 @@ class ConversationHistory:
             yield ai_message
     def __str__(self):
         return f"System: {self.system_prompt}, user: {self.user}, ai: {self.ai}"
-    def load_from_db(self, session_id: str, db: Session):
-        conversations = db.query(Interaction).filter(Interaction.session_id == session_id).order_by(Interaction.timestamp).all()
+    def load_from_db(self, session_id: str, character_name: str, db: Session):
+        conversations = db.query(Interaction).filter(and_(Interaction.session_id == session_id, Interaction.character_name == character_name)).order_by(Interaction.timestamp).all()
         for conversation in conversations:
             self.user.append(conversation.client_message_unicode)
             self.ai.append(conversation.server_message_unicode)
@@ -135,8 +136,11 @@ async def check_session_auth(session_id: str, character_name: str, db: Session, 
     )
 
 
-def delete_chat_history(character):
-    pass
+def delete_chat_history(character_name: str, session_id: str, db: Session):
+    records = db.query(Interaction).filter(and_(Interaction.session_id == session_id, Interaction.character_name == character_name)).all()
+    if records:
+        for record in records:
+            db.delete(record)
 
 
 def handle_request(data):

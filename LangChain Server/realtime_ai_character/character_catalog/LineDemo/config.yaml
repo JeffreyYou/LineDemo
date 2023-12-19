@@ -13,8 +13,8 @@ user: | # you don't need to change this for most cases
 
 text_to_speech_use: ELEVEN_LABS
 
-voice_id: ErXwobaYiN019PkySvjV
-visibility: public
+notification: 默认角色自动推送消息
+
 system-backup: |
     你的职责
     ###

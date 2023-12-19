@@ -52,7 +52,7 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
     
         while True:
             data = await websocket.receive()
-            print(data)
+            logger.info(f"Incoming request: {data}")
 
             
             if (data["type"] == "websocket.disconnect"):
@@ -60,27 +60,36 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                 return
             
             if (data["type"] == "websocket.receive"):
-                llm, message, character, operation = handle_request(data)
+                # context initialization
+                llm, message, character_name, operation = handle_request(data)
+                character = catalog_manager.get_character(character_name)
+                conversation_history = ConversationHistory()
+                conversation_history.system_prompt = character.llm_system_prompt
+                notification = character.notification
                 
                 # delete chat history if needed
                 if operation == "delete_history":
-                    delete_chat_history(character)
+                    delete_chat_history(character_name=character_name, session_id=session_id, db=db)
+                    await manager.send_message(message=notification, websocket=websocket)
+                    await manager.send_message(message="[end_of_the_transmission]", websocket=websocket)
+                    conversation_history.ai = notification
+                    interaction = Interaction(user_id=session_id,
+                            session_id=session_id,
+                            client_message_unicode="",
+                            server_message_unicode=notification,
+                            character_name = character_name)
+                    await asyncio.to_thread(interaction.save, db)  
                     continue
                 
                 # load chat hisotry if there is any
-                session_auth = await check_session_auth(session_id, character, db, logger)
-                conversation_history = ConversationHistory()
-                character = catalog_manager.get_character(character)
-                conversation_history.system_prompt = character.llm_system_prompt
+                session_auth = await check_session_auth(session_id, character_name, db, logger)
                 if session_auth.is_existing_session:
                     logger.info(f"User #{session_id} is loading from existing session")
-                    await asyncio.to_thread(conversation_history.load_from_db, session_id=session_id, db=db)
+                    await asyncio.to_thread(conversation_history.load_from_db, session_id=session_id, character_name=character_name , db=db)
 
 
                 if (llm == None):
-                    await manager.send_message(
-                            message="[Invalid_API_Setting]",
-                            websocket=websocket) 
+                    await manager.send_message(message="[Invalid_API_Setting]", websocket=websocket) 
                     await manager.disconnect(websocket)
                     return
                 
@@ -91,9 +100,7 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                     callback = AsyncCallbackTextHandler(on_new_token, [])
                 )
                 
-                await manager.send_message(
-                            message="[end_of_the_transmission]",
-                            websocket=websocket)  
+                await manager.send_message(message="[end_of_the_transmission]", websocket=websocket)  
                 
                 # 4. Update conversation history
                 conversation_history.user.append(message)
@@ -103,13 +110,11 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                             session_id=session_id,
                             client_message_unicode=message,
                             server_message_unicode=response,
-                            platform="terminal",
-                            action_type='text',
-                            character_id=character.character_id)
+                            character_name = character_name)
                 await asyncio.to_thread(interaction.save, db)   
 
     except WebSocketDisconnect:
-        print(f"User #{phone_number} closed the connection")
+        print(f"User #{session_id} closed the connection")
         await manager.disconnect(websocket)
         return
 

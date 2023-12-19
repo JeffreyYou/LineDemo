@@ -63,12 +63,14 @@ class CatalogManager(Singleton):
 
             character_id = yaml_content['character_id']
             character_name = yaml_content['character_name']
+            character_notification =  yaml_content['notification']
 
             self.characters[character_id] = Character(
                 character_id=character_id,
                 name=character_name,
                 llm_system_prompt=yaml_content["system"],
                 llm_user_prompt=yaml_content["user"],
+                notification= character_notification
             )
             return character_name
     def load_data(self, character_name: str, data_path: str):
