@@ -12,6 +12,8 @@ public class GreenMessage {
       private SenderData senderData;
       private MessageData messageData;
 
+
+
       @Data
       public static class InstanceData {
          private Long idInstance;
@@ -32,7 +34,12 @@ public class GreenMessage {
          private String typeMessage;
          private TextMessageData textMessageData;
 
-         @Data
+
+
+
+
+
+          @Data
          public static class TextMessageData {
             private String textMessage;
 
