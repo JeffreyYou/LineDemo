@@ -7,10 +7,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
 
 import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
+@EnableScheduling
 public class WebSocketConfig {
     @Bean
     public WebSocketClient webSocketClient() {
@@ -31,4 +34,6 @@ public class WebSocketConfig {
     public Gson gsonClient() {
         return new Gson();
     }
+
+
 }
