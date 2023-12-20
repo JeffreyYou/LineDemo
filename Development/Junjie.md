@@ -39,6 +39,23 @@
 - Additional Notes
   - Null
 
+### [Dec 19. 2023]
+- **Time Spent:** 10hours
+- **Tasks Completed:**
+  - Successfully bypass ssl pinning with LSPosed [JustTrustMe](https://github.com/Fuzion24/JustTrustMe), which I though would be the least possible solution as it is too popular and too popular
+  - Pick up some basic knowledge of OpenCV, algorithms are basically the same as in TensorFlow and Keras, but more friendly
+- **Issues Encountered:**
+  - Way too much difficult to reverse engineer LINE.exe
+  - Failed to disable ssl pinning with [apk-mitm](https://github.com/shroudedcode/apk-mitm), seems LINE has mechanisms to prevent modifying and repatching apk cource files
+  - Failed to disable ssl pinning with LSPosed/XPosed modules including [SSLUnpinning](https://github.com/ac-pm/SSLUnpinning_Xposed) and [Inspeckage](https://github.com/ac-pm/Inspeckage), and no one is mantainning them any longer
+- **Solutions and Workarounds:**
+  - Will try WSA + LAN server app
+- **Next Steps:**
+  - Figure out a way to decrypt letter sealing
+  - Find a way to send message and download pictures & other files
+- Additional Notes
+  - Null
+
 ## 2. Code Changes
 
 ### `#TODO`
