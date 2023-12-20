@@ -42,7 +42,7 @@
 ### [Dec 19. 2023]
 - **Time Spent:** 10hours
 - **Tasks Completed:**
-  - Successfully bypass ssl pinning with LSPosed [JustTrustMe](https://github.com/Fuzion24/JustTrustMe), which I though would be the least possible solution as it is too popular and too popular
+  - Successfully bypass ssl pinning with LSPosed [JustTrustMe](https://github.com/Fuzion24/JustTrustMe), which I though would be the least possible solution as it is too popular and too old
   - Pick up some basic knowledge of OpenCV, algorithms are basically the same as in TensorFlow and Keras, but more friendly
 - **Issues Encountered:**
   - Way too much difficult to reverse engineer LINE.exe
