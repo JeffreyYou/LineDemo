@@ -74,7 +74,7 @@ public class WebSocketUtils {
 
     private String generateUri(String phone) throws NoSuchAlgorithmException {
         StringBuilder builder = new StringBuilder("ws://");
-        String url = "localhost:8000";
+        String url = "localhost:8001";
         String api_key = "123";
         String llm_model = "gpt-3.5-turbo-16k";
 
