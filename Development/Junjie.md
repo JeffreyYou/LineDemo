@@ -39,6 +39,7 @@
 - Additional Notes
   - Null
 
+
 ### [Dec 19. 2023]
 - **Time Spent:** 10hours
 - **Tasks Completed:**
@@ -55,6 +56,7 @@
   - Find a way to send message and download pictures & other files
 - Additional Notes
   - Null
+
 
 ## 2. Code Changes
 

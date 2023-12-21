@@ -2,29 +2,31 @@
 
 ## 1. Quick Start
 
-**LangChain Server (Real Char):**
+**LangChain:**
 
-Install dependencies
+Install dependencies and setup database
 
 ```shell
 pip install -r requirements.txt --user
-```
-Setup Environment Variable
-
-```shell
+sqlite3 test.db "VACUUM;"
+alembic upgrade head
 cp .env.example .env
-# Put your OpenAI Api Key in .env file
 ```
-
-Start the server
+Setup environment variable `Api Key` in `.env` file and start the server
 
 ```shell
 python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
 ```
 
-**Webhook Server:**
+**WhatsApp:**
 
-Open `WebHook Server` through IntelliJ 
+Open `WhatsApp` through IntelliJ 
+
+Run the `LineDemoApplication`
+
+**Line:**
+
+Open `Line` through IntelliJ 
 
 Run the `LineDemoApplication`
 
@@ -36,19 +38,30 @@ https://green-api.com/en/docs/api/receiving/technology-http-api/ReceiveNotificat
 
 https://green-api.com/en/docs/api/receiving/technology-http-api/DeleteNotification/
 
+Using `git pull` to update most recent changes
+
 ## 2. Schedule
 
 [Dec 13.2023](./schedule/Dec13_2023.md)
 
 [Dec 14.2023](./schedule/Dec14_2023.md)
 
+[Dec 15.2023](./schedule/Dec15_2023.md)
+
+[Dec 19.2023](./schedule/Dec19_2023.md)
+
 ## 3. Development Progress
 
 [Jeffrey You](./Development/Jeffrey.md)
 
+[Henry](./Development/Henry%20Wang.md)
+
+[Junjie](./Development/Junjie.md)
+
 ## 4. Project Structure
 
 <details> <summary> <b>👇 Click Me </b></summary>
+
 ```
 LineDemo
 │   .gitignore
@@ -56,7 +69,13 @@ LineDemo
 │   README.md
 │
 ├───data
+│       LINE_-与Kajiyama-satoshi的对话.txt
+│       LINE_-与mori907的对话.txt
+│       与江角正行的对话.txt
+│       与清水-亏的对话.txt
+│
 ├───Development
+│       Jeffrey.md
 │       template.md
 │
 ├───images
@@ -64,24 +83,99 @@ LineDemo
 │       website2.png
 │
 ├───LangChain Server
-│   │   catalog.py
+│   │   .env
+│   │   .evn.example
+│   │   .gitignore
+│   │   alembic.ini
 │   │   cli.py
-│   │   main.py
-│   │   openai_llm.py
 │   │   requirements.txt
 │   │   script
-│   │   utils.py
-│   │   websocket_routes.py
+│   │   sqlite.py
+│   │   test.db
 │   │
-│   └───character
-│       ├───Day1Demo
-│       │       config.yaml
-│       │
-│       ├───Day2Demo
-│       │       config.yaml
-│       │
-│       └───LineDemo
-│               config.yaml
+│   ├───alembic
+│   │   │   env.py
+│   │   │   script.py.mako
+│   │   │
+│   │   ├───versions
+│   │   │   │   3b2e26d7395f_create_interactions_table.py
+│   │   │   │
+│   │   │   └───__pycache__
+│   │   │           3b2e26d7395f_create_interactions_table.cpython-312.pyc
+│   │   │
+│   │   └───__pycache__
+│   │           env.cpython-312.pyc
+│   │
+│   ├───realtime_ai_character
+│   │   │   logger.py
+│   │   │   main.py
+│   │   │   utils.py
+│   │   │   websocket_routes.py
+│   │   │
+│   │   ├───character_catalog
+│   │   │   │   catalog.py
+│   │   │   │
+│   │   │   ├───Day1Demo
+│   │   │   │       config.yaml
+│   │   │   │
+│   │   │   ├───Day2Demo
+│   │   │   │       config.yaml
+│   │   │   │
+│   │   │   ├───LineDemo
+│   │   │   │       config.yaml
+│   │   │   │
+│   │   │   └───__pycache__
+│   │   │           catalog.cpython-312.pyc
+│   │   │
+│   │   ├───database
+│   │   │   │   base.py
+│   │   │   │   chroma.py
+│   │   │   │   connection.py
+│   │   │   │   __init__.py
+│   │   │   │
+│   │   │   └───__pycache__
+│   │   │           base.cpython-311.pyc
+│   │   │           base.cpython-312.pyc
+│   │   │           chroma.cpython-311.pyc
+│   │   │           connection.cpython-311.pyc
+│   │   │           connection.cpython-312.pyc
+│   │   │           __init__.cpython-311.pyc
+│   │   │           __init__.cpython-312.pyc
+│   │   │
+│   │   ├───llm
+│   │   │   │   openai_llm.py
+│   │   │   │
+│   │   │   └───__pycache__
+│   │   │           openai_llm.cpython-312.pyc
+│   │   │
+│   │   ├───models
+│   │   │   │   interaction.py
+│   │   │   │
+│   │   │   └───__pycache__
+│   │   │           interaction.cpython-312.pyc
+│   │   │
+│   │   └───__pycache__
+│   │           logger.cpython-312.pyc
+│   │           main.cpython-312.pyc
+│   │           utils.cpython-312.pyc
+│   │           websocket_routes.cpython-312.pyc
+│   │
+│   ├───test
+│   │   │   uuid.py
+│   │   │
+│   │   └───__pycache__
+│   │           uuid.cpython-312.pyc
+│   │
+│   └───__pycache__
+│           catalog.cpython-312.pyc
+│           main.cpython-312.pyc
+│           openai_llm.cpython-312.pyc
+│           utils.cpython-312.pyc
+│           websocket_routes.cpython-312.pyc
+│
+├───schedule
+│       Dec13_2023.md
+│       Dec14_2023.md
 │
 └───WebHook Server
     │   .gitignore
@@ -97,6 +191,7 @@ LineDemo
     │       jarRepositories.xml
     │       misc.xml
     │       uiDesigner.xml
+    │       vcs.xml
     │       workspace.xml
     │
     ├───.mvn
@@ -123,6 +218,7 @@ LineDemo
     │   │   │               │
     │   │   │               ├───entity
     │   │   │               │       GreenMessage.java
+    │   │   │               │       GreenMessageHTTP.java
     │   │   │               │       OpenAIMessage.java
     │   │   │               │
     │   │   │               ├───service
@@ -168,6 +264,7 @@ LineDemo
         │               │       GreenMessage$MessageData.class
         │               │       GreenMessage$SenderData.class
         │               │       GreenMessage.class
+        │               │       GreenMessageHTTP.class
         │               │       OpenAIMessage.class
         │               │
         │               ├───service
