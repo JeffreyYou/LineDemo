@@ -1,14 +1,12 @@
-package com.jeffrey.linedemo.service;
+package com.fissionailab.whatsapp.service;
 
+import com.fissionailab.whatsapp.utils.SelectCharacterUtils;
 import com.google.gson.Gson;
-import com.jeffrey.linedemo.entity.GreenMessage;
-import com.jeffrey.linedemo.entity.OpenAIMessage;
-import com.jeffrey.linedemo.utils.GreenApiUtils;
-import com.jeffrey.linedemo.utils.SelectCharacterUtils;
-import com.jeffrey.linedemo.utils.WebSocketUtils;
+import com.fissionailab.whatsapp.entity.GreenMessage;
+import com.fissionailab.whatsapp.utils.GreenApiUtils;
+import com.fissionailab.whatsapp.utils.WebSocketUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.concurrent.ConcurrentHashMap;

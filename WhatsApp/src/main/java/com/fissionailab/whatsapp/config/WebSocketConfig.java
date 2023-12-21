@@ -1,7 +1,7 @@
-package com.jeffrey.linedemo.config;
+package com.fissionailab.whatsapp.config;
 
+import com.fissionailab.whatsapp.utils.SelectCharacterUtils;
 import com.google.gson.Gson;
-import com.jeffrey.linedemo.utils.SelectCharacterUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;

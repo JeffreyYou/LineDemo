@@ -1,4 +1,4 @@
-package com.jeffrey.linedemo.entity;
+package com.fissionailab.whatsapp.entity;
 
 import lombok.Data;
 

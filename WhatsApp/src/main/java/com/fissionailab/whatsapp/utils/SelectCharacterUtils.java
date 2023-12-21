@@ -1,7 +1,7 @@
-package com.jeffrey.linedemo.utils;
+package com.fissionailab.whatsapp.utils;
 
 import com.google.gson.Gson;
-import com.jeffrey.linedemo.entity.OpenAIMessage;
+import com.fissionailab.whatsapp.entity.OpenAIMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

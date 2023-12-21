@@ -1,14 +1,12 @@
-package com.jeffrey.linedemo.deprecated;
+package com.fissionailab.whatsapp.deprecated;
 
-import com.jeffrey.linedemo.entity.GreenMessage;
-import com.jeffrey.linedemo.entity.GreenMessageHTTP;
-import com.jeffrey.linedemo.service.OpenaiService;
-import com.jeffrey.linedemo.utils.GreenApiUtils;
+import com.fissionailab.whatsapp.entity.GreenMessage;
+import com.fissionailab.whatsapp.entity.GreenMessageHTTP;
+import com.fissionailab.whatsapp.service.OpenaiService;
+import com.fissionailab.whatsapp.utils.GreenApiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLOutput;
 
 @Service
 public class ReceiveService {

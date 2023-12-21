@@ -1,4 +1,4 @@
-package com.jeffrey.linedemo.utils;
+package com.fissionailab.whatsapp.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,7 @@
-package com.jeffrey.linedemo.controller;
+package com.fissionailab.whatsapp.controller;
 
-import com.jeffrey.linedemo.entity.GreenMessage;
-import com.jeffrey.linedemo.service.OpenaiService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.fissionailab.whatsapp.entity.GreenMessage;
+import com.fissionailab.whatsapp.service.OpenaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

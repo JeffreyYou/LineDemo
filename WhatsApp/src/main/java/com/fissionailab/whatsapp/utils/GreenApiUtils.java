@@ -1,8 +1,7 @@
-package com.jeffrey.linedemo.utils;
+package com.fissionailab.whatsapp.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jeffrey.linedemo.entity.GreenMessage;
-import com.jeffrey.linedemo.entity.GreenMessageHTTP;
+import com.fissionailab.whatsapp.entity.GreenMessageHTTP;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

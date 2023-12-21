@@ -2,7 +2,7 @@
 
 ## 1. Quick Start
 
-**LangChain Server (Real Char):**
+**LangChain:**
 
 Install dependencies and setup database
 
@@ -18,9 +18,15 @@ Setup environment variable `Api Key` in `.env` file and start the server
 python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
 ```
 
-**Webhook Server:**
+**WhatsApp:**
 
-Open `WebHook Server` through IntelliJ 
+Open `WhatsApp` through IntelliJ 
+
+Run the `LineDemoApplication`
+
+**Line:**
+
+Open `Line` through IntelliJ 
 
 Run the `LineDemoApplication`
 
