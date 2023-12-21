@@ -1,0 +1,16 @@
+
+pip install -r requirements.txt --user
+
+
+python cli.py run-uvicorn --port 8000 --host 0.0.0.0 
+
+
+
+
+
+
+
+
+
+
+
