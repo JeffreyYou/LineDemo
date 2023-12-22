@@ -75,3 +75,31 @@
   - Q & A for getting stock exchanges
 - **Additional Notes**
   - Null
+
+### [Dec 18. 2023]
+
+- **Time Spent:** 4 hours
+- **Tasks Completed:**
+  - stock exchange Q & A
+- **Issues Encountered:**
+  - Site only avliable in Japanese or India
+- **Solutions and Workarounds:**
+  - Google Translate and chatGPT translate
+- **Next Steps:**
+  - test prompt
+- **Additional Notes**
+  - Null
+
+### [Dec 19. 2023]
+
+- **Time Spent:** 4 hours
+- **Tasks Completed:**
+  - testing prompts
+- **Issues Encountered:**
+  - see test log issues
+- **Solutions and Workarounds:**
+  - 
+- **Next Steps:**
+  - test prompt
+- **Additional Notes**
+  - Null
