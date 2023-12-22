@@ -82,3 +82,45 @@ __Developer Name__: [Henry Wang]
   - Use NodeKakao to receive and send messages in Kakao Talk
 - __Additional Notes:__
   - Null
+## [DEC 20.2023]
+- __Time Spent:__ 9 hours
+
+- __Tasks Completed:__ 
+  - use node.js to get UUID for web login Kakaotalk
+  - write a typescript to connect NodeKakao
+- __Issues Encountered__ 
+  - Fail to log in
+- __Solutions and Workarounds:__
+  - Null
+- __Next Steps:__
+  - Try the KakaoTalk Messaging API
+- __Additional Notes:__
+  - Null
+## [DEC 21.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - set up a demo of send message by python using Kakao Talk Messaging API 
+- __Issues Encountered__ 
+  - Don't support automatically send messages
+- __Solutions and Workarounds:__
+  - Use Kakao business
+- __Next Steps:__
+  - Try to figure out a solution with Kakao Business
+- __Additional Notes:__
+  - Null
+
+## [DEC 22.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Set up the Kakao Business Account
+  - Write a prompt to get the users' information in JSON format
+- __Issues Encountered__ 
+  - Kakao business has usage restrictions and is different from the normal user interface
+- __Solutions and Workarounds:__
+  - Try to Use Third-party API NodeKakao and connect it to the Existing project
+- __Next Steps:__
+  - Work with Jeffrey to achieve project integration
+- __Additional Notes:__
+  - Null
