@@ -124,3 +124,18 @@ __Developer Name__: [Henry Wang]
   - Work with Jeffrey to achieve project integration
 - __Additional Notes:__
   - Null
+
+## [DEC 26.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - update a prompt to get the user's information in JSON format
+  - Let AI score the user'smood based on the user's chat content
+- __Issues Encountered__ 
+  - null 
+- __Solutions and Workarounds:__
+  - null 
+- __Next Steps:__
+  - explore new version of prompts to get better results 
+- __Additional Notes:__
+  - Null
