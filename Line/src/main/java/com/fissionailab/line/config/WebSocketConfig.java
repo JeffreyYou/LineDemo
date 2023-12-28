@@ -1,5 +1,6 @@
 package com.fissionailab.line.config;
 
+import com.fissionailab.line.entity.LineMessage;
 import com.fissionailab.line.utils.SelectCharacterUtils;
 import com.google.gson.Gson;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Configuration
 public class WebSocketConfig {
@@ -38,6 +40,11 @@ public class WebSocketConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public ConcurrentLinkedDeque<LineMessage> tempQueue() {
+        return new ConcurrentLinkedDeque<>();
     }
 
     @Bean

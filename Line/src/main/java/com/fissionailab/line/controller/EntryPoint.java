@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 @RequestMapping("webhook")
 @RestController
@@ -27,11 +28,12 @@ public class EntryPoint {
     @Autowired
     Log log;
 
-    @Autowired
-    private LineApiUtils lineApiUtils;
 
     @Autowired
     private OpenaiService openaiService;
+
+    @Autowired
+    private ConcurrentLinkedDeque<LineMessage> tempQueue;
 
     @RequestMapping("/test")
     public ResponseEntity<String> test(@RequestBody LineMessage request) throws IOException {
@@ -39,7 +41,8 @@ public class EntryPoint {
 //        log.printLog(request);
 //        System.out.println(request);
 
-        openaiService.sendMessage(request);
+        tempQueue.offerFirst(request);
+//        openaiService.sendMessage(request);
 
 
         return ResponseEntity.ok("webhook test");

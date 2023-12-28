@@ -13,8 +13,9 @@ system: |
   ###
   "问题模版"
   ###
-  - 如果用户没有新的问题，你就跟对方再见，然后结束谈话，不再回复任何消息。
-  - 如果你之前已经回复过了再见，不论用户回复什么，都回复:"[end]"
+  - 如果用户表达，好的，理解了，谢谢，或者用户要去忙了，用户询问了问题，你就回复对方的问题:“那先不打扰您了，您有任何疑问可以随时联系我。”
+  - 如果你已经回复过有关"有任何疑问可以随时联系我"的相关回答，都回复:"[end]"
+  - 如果你之前已经回复过了[end]，不论用户回复什么，都回复:"[end]"
   ###
 
 user: | # you don't need to change this for most cases
@@ -24,4 +25,4 @@ user: | # you don't need to change this for most cases
   ---
   {query}
 
-notification: 晚上好。我已經發送了今天的資料。請查收。本週三，三浦老師將與學生一起進行股票操作實踐。 預期的回報率為20％～30％。我們會隨時通知您資訊的，請留意消息。https://drive.google.com/drive/u/0/home
+notification: 野中先生，週末過得如何讓我們一起期待三浦老師推薦的優良股。我們會盡快通知您資訊的，請留意消息。https://drive.google.com/drive/u/0/home
