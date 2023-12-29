@@ -6,6 +6,7 @@ from starlette.websockets import WebSocket, WebSocketState
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 from realtime_ai_character.models.interaction import Interaction
+from realtime_ai_character.models.user import User
 from realtime_ai_character.llm.openai_llm import get_llm, AsyncCallbackTextHandler
 from sqlalchemy import and_
 
@@ -52,6 +53,7 @@ class ConversationHistory:
         for conversation in conversations:
             self.user.append(conversation.client_message_unicode)
             self.ai.append(conversation.server_message_unicode)
+
 
 class Singleton:
     _instances = {}
@@ -115,6 +117,20 @@ class SessionAuthResult:
     is_existing_session: bool
     is_authenticated_user: bool
 
+# @dataclass
+# class UserAuthResult:
+#     is_user_exist: bool
+#     user_id: str
+#     user_name: str
+#     investment_knowledge: str
+#     is_open_account: bool
+#     account_agency: str
+#     is_in_group: bool
+@dataclass
+class UserAuthResult:
+    is_user_exist: bool
+
+
 async def check_session_auth(session_id: str, character_name: str, db: Session, logger) -> SessionAuthResult:
     try:
         original_chat = await asyncio.to_thread(
@@ -134,7 +150,30 @@ async def check_session_auth(session_id: str, character_name: str, db: Session, 
             is_existing_session=True,
             is_authenticated_user=False,
     )
-
+async def check_user_info(session_id: str, db: Session, logger) -> UserAuthResult:
+    try:
+        user_info = await asyncio.to_thread(
+            db.query(User).filter(User.user_id == session_id).first
+        )
+    except Exception as e:
+        logger.info(f'User {session_id} Error: {e}')
+        return UserAuthResult(
+            is_user_exist=False,
+        )
+    if user_info:
+            return user_info
+    else:
+        logger.info(f'User {session_id} not found')
+        return None
+    
+async def load_user_info(session_id: str, db: Session, logger):
+    try:
+        user_info = await asyncio.to_thread(
+            db.query(User).filter(User.user_id == session_id).first)
+        return user_info
+    except Exception as e:
+        logger.info(f'User {session_id} info not available since {e}')
+        return None
 
 def delete_chat_history(character_name: str, session_id: str, db: Session):
     records = db.query(Interaction).filter(and_(Interaction.session_id == session_id, Interaction.character_name == character_name)).all()
