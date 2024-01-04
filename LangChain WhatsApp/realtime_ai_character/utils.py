@@ -13,7 +13,7 @@ from sqlalchemy import and_
 import os
 import json
 import asyncio
-
+import re
 
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -163,7 +163,7 @@ async def check_user_info(session_id: str, db: Session, logger) -> UserAuthResul
     if user_info:
             return user_info
     else:
-        logger.info(f'User {session_id} not found')
+        logger.info(f'User {session_id} doesn\'t have user infomation')
         return None
     
 async def load_user_info(session_id: str, db: Session, logger):
@@ -180,7 +180,11 @@ def delete_chat_history(character_name: str, session_id: str, db: Session):
     if records:
         for record in records:
             db.delete(record)
-
+def delete_user_history(user_id: str, db: Session):
+    records = db.query(User).filter(User.user_id == user_id).all()
+    if records:
+        for record in records:
+            db.delete(record)
 
 def handle_request(data):
     data = json.loads(data["text"])
@@ -197,3 +201,64 @@ def handle_request(data):
 
 
     return llm, message, character, operation
+
+async def chaining_user_info(session_id: str, db: Session, logger, conversation_history, catalog_manager, llm, on_new_token_null):
+    user_auth = await check_user_info(session_id, db, logger)
+    # load user information if there is any
+    if user_auth:
+        logger.info(f"User #{session_id} is loading UserInfo from existing session")
+        user_info = await load_user_info(session_id, db, logger)
+        conversation_history.system_prompt += f'''
+        用户信息:
+        ###
+        用户姓名:{user_info.user_name}
+        ###
+        '''.strip()
+        # print(conversation_history.system_prompt)
+    else:
+        logger.info(f"User {session_id}: generating user profile...")
+        user_conversation = ConversationHistory()
+        analysis_character = catalog_manager.get_character("UserAnalysis")
+        user_conversation.system_prompt = analysis_character.llm_system_prompt
+
+        await asyncio.to_thread(user_conversation.load_from_db, session_id=session_id, character_name="DemoDay01" , db=db)
+        # print(f"用户信息抓取模版:\n{user_conversation}")
+        user_info_response = await llm.achat(
+            history = build_history(user_conversation),
+            user_input = "",
+            user_input_template = analysis_character.llm_user_prompt,
+            callback = AsyncCallbackTextHandler(on_new_token_null)
+        )
+
+        user_info_response = json.loads(user_info_response)
+        user = User(user_id = session_id,
+                    user_name = user_info_response["name"],
+                    investment_knowledge = user_info_response["investment_knowledge"],
+                    account_agency = user_info_response["account_agency"],
+                    is_in_group = user_info_response["is_in_group"] == "yes",
+                    is_open_account = user_info_response["is_open_account"] == "yes"
+                    )
+        user_info_rga =  f'''\n用户信息:\n###\n'''
+        user_info_rga += f'用户姓名: {user_info_response["name"]}\n'.strip()
+        user_info_rga += '###\n'
+        conversation_history.system_prompt += user_info_rga
+        await asyncio.to_thread(user.save, db) 
+
+def chaining_question_rga(catalog_manager, conversation_history, message, logger):
+    logger.info(f"Retrieving similar questios: \"f{message}\"")
+
+    chroma = catalog_manager.get_chroma()
+    docs =chroma.similarity_search(message, 2)
+    rga_info = []
+    for doc in docs:
+        chats = re.findall(r'\[([^\]]+)\]', doc.page_content)
+        for chat in chats:
+            rga_info.append(chat.strip())
+    rga_content = f'''\n补充信息\n###\n'''
+    for rga in rga_info:
+        rga_content += f'{rga}\n'
+    rga_content += '###\n'
+
+    print(conversation_history.system_prompt + rga_content)
+    # conversation_history.system_prompt += rga_content
+    

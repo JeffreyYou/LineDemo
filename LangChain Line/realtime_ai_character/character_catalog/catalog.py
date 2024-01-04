@@ -18,20 +18,20 @@ class CatalogManager(Singleton):
 
         self.db = get_chroma()
 
-        # if overwrite:
-        #     logger.info('Overwriting existing data in the chroma.')
-        #     self.db.delete_collection()
-        #     self.db = get_chroma()
+        if overwrite:
+            logger.info('Overwriting existing data in the chroma.')
+            self.db.delete_collection()
+            self.db = get_chroma()
 
         self.characters = {}
         self.author_name_cache = {}
         self.load_characters(overwrite=overwrite)
 
-        # if overwrite:
-        #     logger.info('Persisting data in the chroma.')
-        #     self.db.persist()
-        # logger.info(
-        #     f"Total document load: {self.db._client.get_collection('llm').count()}")
+        if overwrite:
+            logger.info('Persisting data in the chroma.')
+            self.db.persist()
+        logger.info(
+            f"Total document load: {self.db._client.get_collection('llm').count()}")
         
         # query = "Elon Musk unique human ID "
         # docs = self.db.similarity_search(query)

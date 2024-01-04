@@ -18,42 +18,55 @@ class CatalogManager(Singleton):
 
         self.db = get_chroma()
 
-        # if overwrite:
-        #     logger.info('Overwriting existing data in the chroma.')
-        #     self.db.delete_collection()
-        #     self.db = get_chroma()
+        if overwrite:
+            logger.info('Overwriting existing data in the chroma.')
+            self.db.delete_collection()
+            self.db = get_chroma()
 
         self.characters = {}
         self.author_name_cache = {}
         self.load_characters(overwrite=overwrite)
 
-        # if overwrite:
-        #     logger.info('Persisting data in the chroma.')
-        #     self.db.persist()
-        # logger.info(
-        #     f"Total document load: {self.db._client.get_collection('llm').count()}")
+        if overwrite:
+            logger.info('Persisting data in the chroma.')
+            self.db.persist()
+        logger.info(
+            f"Total document load: {self.db._client.get_collection('llm').count()}")
         
-        # query = "Elon Musk unique human ID "
+        # query = "请多指教"
         # docs = self.db.similarity_search(query)
+        # print(docs)
         # print(docs[0].page_content)
 
 
     def get_character(self, name) -> Character:
         return self.characters[name]
+    
+    def get_chroma(self):
+        return self.db
 
     def load_characters(self, overwrite):
         path = Path(__file__).parent
-        # path = path / 'character'
+
         excluded_dirs = {"__pycache__"}
         directories = [d for d in path.iterdir() if d.is_dir()
                         and d.name not in excluded_dirs]
-        # print(f'{directories}')
-        for directory in directories:
-                character_name = self.load_character(directory)
+        
+        for directory in path.iterdir():
+             if directory.is_dir():
+                  if directory.name == "Rga":
+                       if overwrite:
+                            self.load_data("Rga", directory)
+                  elif directory.name not in excluded_dirs:
+                        character_name = self.load_character(directory)
+                        logger.info('Loaded data for character: ' + character_name)
+
+        # for directory in directories:
+        #         character_name = self.load_character(directory)
                 # if overwrite:
                 #     self.load_data(character_name, directory / 'data')
                 #     logger.info('Loaded data for character: ' + character_name)
-                logger.info('Loaded data for character: ' + character_name)
+                # logger.info('Loaded data for character: ' + character_name)
 
 
     def load_character(self, directory):
@@ -81,8 +94,8 @@ class CatalogManager(Singleton):
 
         text_splitter = CharacterTextSplitter(
             separator='\n',
-            chunk_size=500,
-            chunk_overlap=100)
+            chunk_size=200,
+            chunk_overlap=50)
 
         docs = text_splitter.create_documents(
             texts=[d.text for d in documents],
@@ -90,7 +103,7 @@ class CatalogManager(Singleton):
                 'character_name': character_name,
                 'id': d.id_,
             } for d in documents])
-        print(docs)
+        # print(docs)
         self.db.add_documents(docs)
         
 

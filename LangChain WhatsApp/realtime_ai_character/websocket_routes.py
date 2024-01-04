@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, WebSocket, WebSocke
 from realtime_ai_character.character_catalog.catalog import CatalogManager, get_catalog_manager
 from realtime_ai_character.utils import get_connection_manager, delete_chat_history, handle_request
 from realtime_ai_character.llm.openai_llm import AsyncCallbackTextHandler
-from realtime_ai_character.utils import ConversationHistory, build_history, SessionAuthResult, check_session_auth, check_user_info, load_user_info
+from realtime_ai_character.utils import ConversationHistory, build_history, SessionAuthResult, check_session_auth, chaining_user_info, delete_user_history, chaining_question_rga
 from realtime_ai_character.database.connection import get_db
 from realtime_ai_character.models.interaction import Interaction
 from realtime_ai_character.models.user import User
@@ -73,6 +73,8 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                 # delete chat history if needed
                 if operation == "delete_history":
                     delete_chat_history(character_name=character_name, session_id=session_id, db=db)
+                    if (character.name == "DemoDay01"):
+                        delete_user_history(user_id=session_id, db=db)
                     await manager.send_message(message=notification, websocket=websocket)
                     await manager.send_message(message="[end_of_the_transmission]", websocket=websocket)
                     conversation_history.ai = notification
@@ -97,49 +99,10 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                 
                 # load user info
                 if (character.name != "DemoDay01"):
-                    # load user information if there is any
-                    user_auth = await check_user_info(session_id, db, logger)
-                    if user_auth:
-                        logger.info(f"User #{session_id} is loading UserInfo from existing session")
-                        user_info = await load_user_info(session_id, db, logger)
-                        conversation_history.system_prompt += f'''
-                        用户信息:
-                        ###
-                        用户姓名:{user_info.user_name}
-                        ###
-                        '''.strip()
-                        # print(conversation_history.system_prompt)
-                    else:
-                        logger.info("generating user profile...")
-                        user_conversation = ConversationHistory()
-                        analysis_character = catalog_manager.get_character("UserAnalysis")
-                        user_conversation.system_prompt = analysis_character.llm_system_prompt
-
-                        await asyncio.to_thread(user_conversation.load_from_db, session_id=session_id, character_name="DemoDay01" , db=db)
-                        print(user_conversation)
-                        user_info_response = await llm.achat(
-                            history = build_history(user_conversation),
-                            user_input = "",
-                            user_input_template = analysis_character.llm_user_prompt,
-                            callback = AsyncCallbackTextHandler(on_new_token_null)
-                        )
-
-                        user_info_response = json.loads(user_info_response)
-                        user = User(user_id = session_id,
-                                    user_name = user_info_response["name"],
-                                    investment_knowledge = user_info_response["investment_knowledge"],
-                                    account_agency = user_info_response["account_agency"],
-                                    is_in_group = user_info_response["is_in_group"] == "yes",
-                                    is_open_account = user_info_response["is_open_account"] == "yes"
-                                    )
-                        conversation_history.system_prompt += f'''
-                        用户信息:
-                        ###
-                        用户姓名:{user_info_response["name"]}
-                        ###
-                        '''.strip()
-                        await asyncio.to_thread(user.save, db)   
+                    await chaining_user_info(session_id=session_id, db=db, logger=logger, conversation_history=conversation_history, catalog_manager=catalog_manager, llm=llm, on_new_token_null=on_new_token_null)
                         
+                # RGA
+                chaining_question_rga(catalog_manager, conversation_history, message, logger)
                 
                 response = await llm.achat(
                     history = build_history(conversation_history),
