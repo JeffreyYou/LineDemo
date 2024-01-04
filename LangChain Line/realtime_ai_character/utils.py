@@ -145,7 +145,7 @@ def delete_chat_history(character_name: str, session_id: str, db: Session):
 
 def handle_request(data):
     data = json.loads(data["text"])
-    model = "gpt-4"
+    model = "gpt-4-1106-preview"
     temperature = 0
     message = data["message_content"]
     character = data["character"]

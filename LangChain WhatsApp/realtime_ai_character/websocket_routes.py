@@ -114,13 +114,16 @@ async def handle_receive(session_id: str, websocket: WebSocket, db: Session):
                         user_conversation = ConversationHistory()
                         analysis_character = catalog_manager.get_character("UserAnalysis")
                         user_conversation.system_prompt = analysis_character.llm_system_prompt
+
                         await asyncio.to_thread(user_conversation.load_from_db, session_id=session_id, character_name="DemoDay01" , db=db)
+                        print(user_conversation)
                         user_info_response = await llm.achat(
                             history = build_history(user_conversation),
                             user_input = "",
                             user_input_template = analysis_character.llm_user_prompt,
                             callback = AsyncCallbackTextHandler(on_new_token_null)
                         )
+
                         user_info_response = json.loads(user_info_response)
                         user = User(user_id = session_id,
                                     user_name = user_info_response["name"],

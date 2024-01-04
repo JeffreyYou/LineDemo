@@ -12,7 +12,7 @@ def cli():
 @click.argument('args', nargs=-1, type=click.UNPROCESSED)
 def run_uvicorn(args):
     click.secho("Running uvicorn server...", fg='green')
-    subprocess.run(["python3", "-m", "uvicorn", "realtime_ai_character.main:app",
+    subprocess.run(["python", "-m", "uvicorn", "realtime_ai_character.main:app",
                    "--ws-ping-interval", "60",
                     "--ws-ping-timeout", "60",
                     "--timeout-keep-alive", "60"] + list(args))

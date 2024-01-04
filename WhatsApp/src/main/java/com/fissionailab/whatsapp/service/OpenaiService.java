@@ -27,6 +27,7 @@ public class OpenaiService {
     @Autowired
     ConcurrentHashMap<String, String> userCharacter;
     public void sendMessage(GreenMessage data) {
+        try{
         String phone = data.getSenderData().getSender();
         String message = data.getMessageData().getTextMessageData().getTextMessage();
         String chatId = data.getSenderData().getChatId();
@@ -34,7 +35,7 @@ public class OpenaiService {
         System.out.println("[User]: " + message);
         System.out.print("[AI]: ");
 
-        try {
+
             selectCharacterUtils.handleRequest(message, phone, chatId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
