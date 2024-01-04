@@ -58,6 +58,19 @@
   - Null
 
 
-## 2. Code Changes
+### [Jan 4. 2024]
+- **Tasks Completed:**
+  - Test Line messaging API with openai API. Successfully get reply from chatgpt with expected output, including emojis, sitckers and images.
+- **Issues Encountered:**
+  - API does not natively support files other than emoji, sticker, image, mp4
+- **Solutions and Workarounds:**
+  - Should send direct link for file sharing
+- **Next Steps:**
+  - Learn chroma
+- Additional Notes
+  - Null
+ 
 
-### `#TODO`
+## 2. Code Changes
+### [Jan 4. 2024]
+https://github.com/JeffreyYou/LineDemo/commit/bf8428acdc70092a6151aa186b6ac980a3f52b7a
