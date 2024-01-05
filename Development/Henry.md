@@ -132,10 +132,110 @@ __Developer Name__: [Henry Wang]
   - update a prompt to get the user's information in JSON format
   - Let AI score the user'smood based on the user's chat content
 - __Issues Encountered__ 
-  - null 
+  - Null 
 - __Solutions and Workarounds:__
-  - null 
+  - Null
 - __Next Steps:__
   - explore new version of prompts to get better results 
+- __Additional Notes:__
+  - Null
+
+## [DEC 27.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Learn the frameworks and applications of sqlalchemy and Alembic
+- __Issues Encountered__ 
+  - Null 
+- __Solutions and Workarounds:__
+  - Null 
+- __Next Steps:__
+  - Null 
+- __Additional Notes:__
+  - Null
+
+## [DEC 28.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Use sqlalchemy and Alembic to build a database and record the user's chat progress
+- __Issues Encountered__ 
+  - Null 
+- __Solutions and Workarounds:__
+  - Null
+- __Next Steps:__
+  - explore new version of prompts to get better results 
+- __Additional Notes:__
+  - Null
+
+## [DEC 29.2023]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Build database and record if the chat get the user's important information
+  - Organize Day 11-Day 20 prompts into mind map format
+- __Issues Encountered__ 
+  - Null
+- __Solutions and Workarounds:__
+  - Null
+- __Next Steps:__
+  - Null
+- __Additional Notes:__
+  - Null
+
+## [Jan 1.2024]
+- __Time Spent:__ 3 hours
+
+- __Tasks Completed:__ 
+  - Read the green api documentation
+- __Issues Encountered__ 
+  - Null 
+- __Solutions and Workarounds:__
+  - Null 
+- __Next Steps:__
+  - Figure out how to send emoji and stickers through Green API
+- __Additional Notes:__
+  - Null
+
+## [Jan 2.2024]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Study on how to use green api to send emoji and stickers
+- __Issues Encountered__ 
+  - Null 
+- __Solutions and Workarounds:__
+  - Null 
+- __Next Steps:__
+  - Null 
+- __Additional Notes:__
+  - Null
+
+## [Jan 3.2024]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Use postman to simulate green api's webhook to send emoji, stickers, and files
+- __Issues Encountered__ 
+  - stickers are not supported on Green API 
+- __Solutions and Workarounds:__
+  - Null
+- __Next Steps:__
+  - Null
+- __Additional Notes:__
+  - Null
+
+## [Jan 4.2024]
+- __Time Spent:__ 8 hours
+
+- __Tasks Completed:__ 
+  - Communicate with Green API engineers to explore current methods of sending stickers and GIFs
+  - Find the Green API gif library, download the gif and convert it to MP4 format for testing
+- __Issues Encountered__ 
+  - Null
+- __Solutions and Workarounds:__
+  - Null 
+- __Next Steps:__
+  - Null 
 - __Additional Notes:__
   - Null
