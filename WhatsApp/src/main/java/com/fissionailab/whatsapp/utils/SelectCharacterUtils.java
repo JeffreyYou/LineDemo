@@ -26,6 +26,10 @@ public class SelectCharacterUtils {
             selectCharacter(message, phone, session);
             return;
         }
+        if (message.startsWith("https")) {
+            sendImage(message, phone, session);
+            return;
+        }
         userCharacter.putIfAbsent(phone, "default_character");
         sendMessage(message, phone, session);
     }
@@ -36,6 +40,13 @@ public class SelectCharacterUtils {
 
         userCharacter.put(phone, character);
         String jsonMessage = gson.toJson(new OpenAIMessage("", character,"delete_history"));
+        TextMessage aiMessage = new TextMessage(jsonMessage);
+        session.sendMessage(aiMessage);
+    }
+
+    private void sendImage(String message, String phone, WebSocketSession session) throws Exception {
+
+        String jsonMessage = gson.toJson(new OpenAIMessage(message, userCharacter.get(phone),"image_read"));
         TextMessage aiMessage = new TextMessage(jsonMessage);
         session.sendMessage(aiMessage);
     }

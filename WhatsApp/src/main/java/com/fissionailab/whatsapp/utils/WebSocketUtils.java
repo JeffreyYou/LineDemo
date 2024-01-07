@@ -65,7 +65,53 @@ public class WebSocketUtils {
                 System.out.print(messagePayload);
                 sb.append(messagePayload);
             } else {
-                greenApiUtils.sendMessageToUser(sb.toString(), userId);
+                String messageToUser = sb.toString();
+                if (messageToUser.endsWith("[PDF_01]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[PDF_01]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "PDF/开群第1天 日本(最终版本).pdf");
+                } else if (messageToUser.endsWith("[PDF_02]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[PDF_02]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "PDF/开群第2天 日本(最终版).pdf");
+                } else if (messageToUser.endsWith("[PDF_03]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[PDF_03]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "PDF/10月17日です朝情報.pdf");
+                } else if (messageToUser.endsWith("[Picture_01]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_01]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/breakfast.jpg");
+                } else if (messageToUser.endsWith("[Picture_02]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_02]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/lunch.jpg");
+                } else if (messageToUser.endsWith("[Picture_03]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_03]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/yoga.jpg");
+                } else if (messageToUser.endsWith("[Picture_04]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_04]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/午饭.jpg");
+                } else if (messageToUser.endsWith("[Picture_05]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_05]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/在做什么.jpg");
+                } else if (messageToUser.endsWith("[Picture_06]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_06]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/san.jpg");
+                } else if (messageToUser.endsWith("[Picture_07]")) {
+                    String textMessage = messageToUser.substring(0, messageToUser.length() - "[Picture_07]".length());
+                    greenApiUtils.sendMessageToUser(textMessage, userId);
+                    greenApiUtils.sendFileToUser(userId, "picture/晚上出去吗.jpg");
+                }
+                else {
+                    greenApiUtils.sendMessageToUser(messageToUser, userId);
+                }
+
+
                 sb.setLength(0);
                 System.out.println();
             }

@@ -31,11 +31,25 @@ public class GreenMessage {
       public static class MessageData {
          private String typeMessage;
          private TextMessageData textMessageData;
+         private FileMessageData fileMessageData;
 
          @Data
          public static class TextMessageData {
             private String textMessage;
 
          }
+         @Data
+         public static class FileMessageData {
+             private String downloadUrl;
+             private String caption;
+             private String fileName;
+             private String jpegThumbnail;
+             private String mimeType;
+             private int forwardingScore;
+             private boolean isForwarded;
+
+         }
       }
+
+
 }

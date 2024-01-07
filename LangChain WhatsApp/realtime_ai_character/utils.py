@@ -14,6 +14,8 @@ import os
 import json
 import asyncio
 import re
+import base64
+import requests
 
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -83,7 +85,16 @@ def build_history(conversation_history: ConversationHistory) -> List[BaseMessage
         else:
             history.append(HumanMessage(content=message))
     return history
-
+def build_history_image(conversation_history: ConversationHistory, system_prompt) -> List[BaseMessage]:
+    history = []
+    for i, message in enumerate(conversation_history):
+        if i == 0:
+            history.append(SystemMessage(content=system_prompt))
+        elif i % 2 == 0:
+            history.append(AIMessage(content=message))
+        else:
+            history.append(HumanMessage(content=message))
+    return history
 
 
 class ConnectionManager(Singleton):
@@ -201,10 +212,96 @@ def handle_request(data):
 
 
     return llm, message, character, operation
+def encode_image(image_path):
+  with open(image_path, "rb") as image_file:
+    return base64.b64encode(image_file.read()).decode('utf-8')
+
+def findAllFile(base):
+    for root, ds, fs in os.walk(base):
+        for f in fs:
+            yield f
+def handle_request_image(data, session_id, image_map):
+    # path = 'C:\\Users\\nickd\\Desktop\\test'
+    # for img in findAllFile(path):
+    #     image_path = path + '/' + img
+    #     base64_image = encode_image(image_path)
+    data = json.loads(data["text"])
+    url = data["message_content"]
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {openai_api_key}"
+    }
+    payload = {
+        "model": "gpt-4-vision-preview",
+        "messages": [
+            {
+            "role": "user",
+            "content": [
+                {
+                "type": "text",
+                "text": 
+                """
+                    你的職責
+                    ###
+                    請讀取這張圖片的內容，並根據其內容按照"Json模板生成答案"
+                    不管是不清楚還是沒有的讀取到的的內容都用 "None" 代替
+                    ###
+                    Json模板
+                    ###
+                    {   
+                        isInvestment: 是否為證券交易截圖 (yes or no)
+                        descriptionIfNot: 如果不是證券交易截圖,描述這個圖片
+                        pictureInfo: {
+                            顯示時間: ,
+                            網頁標題: ,
+                            公司類型: ,
+                            橫幅: {
+                                是否有橫幅: (yes or no),
+                                橫幅內容: ,
+                                橫幅含義: 
+                            },
+                            股票交易詳情，從表格裏獲得相關內容，多少株就是多少股的成交數量，HKD就是成交單價: {
+                            註文番號: 一般是類似0007這種格式和註文日時附近,
+                            內容:  ,
+                            銘柄: 一般都是06918類似這種格式，在標題是 銘柄的列表裏
+                            註文數量:  xxx株，從註文數量裏獲得  假設識別20.000不是20株，是2萬株的意思，當後面是000的時候，說明是,而不是.
+                            註文單價:  xxxHKD，一般都是类似1.720HKD,不会有逗号出现，只有小数点
+                            成交日期:  ,
+                            結算日期:  ,
+                            合計金額:  ,
+                            手續費:  ,
+                            成交時間:  
+                            },
+                            底部: {
+                                是否有註釋: (yes or no),
+                                註釋內容:  ,
+                                是否有網址: (yes or no),
+                                網址內容:  
+                            }
+                        }
+                    }
+                    ###
+                """
+                },
+                {
+                "type": "image_url",
+                "image_url": {
+                    "url": url
+                }
+                }
+            ]
+            }
+        ],
+        "max_tokens": 500
+    }
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    res = response.json()['choices'][0]['message']['content']
+    print(res)
+    image_map[session_id] = res
+    return res
 
 async def chaining_user_info(session_id: str, db: Session, logger, conversation_history, catalog_manager, llm, on_new_token_null):
     user_auth = await check_user_info(session_id, db, logger)
-    # load user information if there is any
     if user_auth:
         logger.info(f"User #{session_id} is loading UserInfo from existing session")
         user_info = await load_user_info(session_id, db, logger)
@@ -214,7 +311,6 @@ async def chaining_user_info(session_id: str, db: Session, logger, conversation_
         用户姓名:{user_info.user_name}
         ###
         '''.strip()
-        # print(conversation_history.system_prompt)
     else:
         logger.info(f"User {session_id}: generating user profile...")
         user_conversation = ConversationHistory()
@@ -222,7 +318,6 @@ async def chaining_user_info(session_id: str, db: Session, logger, conversation_
         user_conversation.system_prompt = analysis_character.llm_system_prompt
 
         await asyncio.to_thread(user_conversation.load_from_db, session_id=session_id, character_name="DemoDay01" , db=db)
-        # print(f"用户信息抓取模版:\n{user_conversation}")
         user_info_response = await llm.achat(
             history = build_history(user_conversation),
             user_input = "",
@@ -244,8 +339,8 @@ async def chaining_user_info(session_id: str, db: Session, logger, conversation_
         conversation_history.system_prompt += user_info_rga
         await asyncio.to_thread(user.save, db) 
 
-def chaining_question_rga(catalog_manager, conversation_history, message, logger):
-    logger.info(f"Retrieving similar questios: \"f{message}\"")
+def chaining_question_rag(catalog_manager, conversation_history, message, logger):
+    logger.info(f"Retrieving similar questios: {message}")
 
     chroma = catalog_manager.get_chroma()
     docs =chroma.similarity_search(message, 2)
@@ -258,7 +353,13 @@ def chaining_question_rga(catalog_manager, conversation_history, message, logger
     for rga in rga_info:
         rga_content += f'{rga}\n'
     rga_content += '###\n'
+    conversation_history.system_prompt += rga_content
 
-    print(conversation_history.system_prompt + rga_content)
-    # conversation_history.system_prompt += rga_content
+def chaining_picture_rag(conversation_history, session_id, image_map):
+    if session_id in image_map:
+        conversation_history.system_prompt += """用户交易信息\n###\n"""
+        conversation_history.system_prompt += image_map[session_id]
+        conversation_history.system_prompt += """\n###"""
+
+
     

@@ -28,13 +28,18 @@ public class OpenaiService {
     ConcurrentHashMap<String, String> userCharacter;
     public void sendMessage(GreenMessage data) {
         try{
-        String phone = data.getSenderData().getSender();
-        String message = data.getMessageData().getTextMessageData().getTextMessage();
-        String chatId = data.getSenderData().getChatId();
+            String phone = data.getSenderData().getSender();
+            String message;
+            if (data.getMessageData().getTextMessageData() == null) {
+                message = data.getMessageData().getFileMessageData().getDownloadUrl();
+                System.out.println("[User]: send a image: " + data.getMessageData().getFileMessageData().getDownloadUrl());
 
-        System.out.println("[User]: " + message);
-        System.out.print("[AI]: ");
-
+            } else {
+                message = data.getMessageData().getTextMessageData().getTextMessage();
+                System.out.println("[User]: " + message);
+                System.out.print("[AI]: ");
+            }
+            String chatId = data.getSenderData().getChatId();
 
             selectCharacterUtils.handleRequest(message, phone, chatId);
         } catch (Exception e) {
